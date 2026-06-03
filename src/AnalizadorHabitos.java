@@ -1,10 +1,10 @@
 public class AnalizadorHabitos {
 
-    public String calcularRiesgo(double horas) {
+    public String calcularRiesgo(double tiempoTotal) {
 
-        if (horas < 4) {
+        if (tiempoTotal <= 4) {
             return "BAJO";
-        } else if (horas <= 7) {
+        } else if (tiempoTotal <= 7) {
             return "MEDIO";
         } else {
             return "ALTO";
