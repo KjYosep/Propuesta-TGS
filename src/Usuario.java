@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+
 public class Usuario {
-    private String nombre;
+    protected String nombre;
+    protected ArrayList<>actividades;
 
     public Usuario(String nombre) {
         this.nombre = nombre;
