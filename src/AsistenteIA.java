@@ -1,79 +1,72 @@
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class AsistenteIA {
-    public void generarHorario(String riesgo) {
-        System.out.println("\nHORARIO RECOMENDADO");
-        Scanner actividades = new Scanner(System.in);
 
-        if (riesgo.equals("ALTO")) {
-            System.out.println("Su nivel de riesgo es " + riesgo);
-            System.out.println("\nA continuacion, se le recomienda un horario personalizado para reducir su adiccion digital y mejorar su bienestar general.");
-            System.out.println("Digite cuantas actividades realiza al dia: ");
-            int cantidad = actividades.nextInt();
-            actividades.nextLine(); // limpiar buffer
-            String[] listaActividades = new String[cantidad];
-            for (int i = 0; i < cantidad; i++) {
-                System.out.print("Digite la actividad " + (i + 1) + ": ");
-                listaActividades[i] = actividades.nextLine();
-            }
+    /**
+     * Muestra el horario generado para un usuario a partir de su lista
+     * de actividades (ya ordenadas cronológicamente por Usuario).
+     * Ya no pide entrada al usuario: todo viene del motor aleatorio.
+     *
+     * @param usuario objeto con nombre y actividades generadas
+     * @param riesgo  nivel de riesgo calculado por AnalizadorHabitos
+     */
+    public void generarHorario(Usuario usuario, String riesgo) {
+        ArrayList<Actividad> lista = usuario.getActividades();
 
-            System.out.println("\nHorario personalizado basado en sus actividades:");
-            System.out.println("06:00 - Levantarse y ejercicio matutino (sin pantallas)");
-            System.out.println("07:00 - Desayuno");
-            System.out.println("08:00 - Inicio de actividades del dia:");
+        System.out.println("\n╔══════════════════════════════════════════════╗");
+        System.out.println("  HORARIO RECOMENDADO — " + usuario.getNombre());
+        System.out.println("  Nivel de riesgo digital: " + riesgo);
+        System.out.println("╚══════════════════════════════════════════════╝");
 
-            int hora = 8;
-            for (int i = 0; i < listaActividades.length; i++) {
-                System.out.printf("%02d:00 - %s%n", hora, listaActividades[i]);
-                hora++;
-                if (hora == 12) {
-                    System.out.println("12:00 - Almuerzo (sin pantallas)");
-                    hora = 13;
-                }
-            }
-
-            if (hora <= 17) hora = 17;
-            System.out.printf("%02d:00 - Tiempo al aire libre o actividad fisica%n", hora);
-            System.out.printf("%02d:00 - Cena%n", hora + 1);
-            System.out.printf("%02d:00 - Maximo 30 minutos de pantalla permitidos%n", hora + 2);
-            System.out.println("22:00 - Dormir (sin dispositivos en el cuarto)");
-
-        } else if (riesgo.equals("MEDIO")) {
-            System.out.println("Su nivel de riesgo es " + riesgo);
-            System.out.println("\nA continuacion, se le recomienda un horario personalizado para reducir su adiccion digital y mejorar su bienestar general.");
-            System.out.println("Digite cuantas actividades realiza al dia: ");
-            int cantidad = actividades.nextInt();
-            actividades.nextLine(); // limpiar buffer
-            String[] listaActividades = new String[cantidad];
-            for (int i = 0; i < cantidad; i++) {
-                System.out.print("Digite la actividad " + (i + 1) + ": ");
-                listaActividades[i] = actividades.nextLine();
-            }
-
-            System.out.println("\nHorario personalizado basado en sus actividades:");
-            System.out.println("07:00 - Levantarse");
-            System.out.println("07:30 - Desayuno");
-            System.out.println("08:00 - Inicio de actividades del dia:");
-
-            int hora = 8;
-            for (int i = 0; i < listaActividades.length; i++) {
-                System.out.printf("%02d:00 - %s%n", hora, listaActividades[i]);
-                hora++;
-                if (hora == 12) {
-                    System.out.println("12:00 - Almuerzo");
-                    hora = 13;
-                }
-            }
-
-            if (hora <= 17) hora = 17;
-            System.out.printf("%02d:00 - Tiempo libre (maximo 1 hora de pantalla)%n", hora);
-            System.out.printf("%02d:00 - Cena%n", hora + 1);
-            System.out.printf("%02d:00 - Redes sociales (maximo 30 minutos)%n", hora + 2);
-            System.out.println("23:00 - Dormir");
-
-        } else {
-            System.out.println("Su nivel de riesgo es " + riesgo);
-            System.out.println("Mantenga sus habitos actuales, pero recuerde tomar descansos regulares y limitar el tiempo de pantalla para evitar futuros riesgos.");
+        if (lista.isEmpty()) {
+            System.out.println("  (No se generaron actividades para este usuario)");
+            return;
         }
+
+        // Encabezado antes del primer bloque (madrugada / mañana temprana)
+        imprimirBloqueInicial(riesgo);
+
+        // Actividades del día ordenadas cronológicamente
+        for (Actividad act : lista) {
+            System.out.println("  " + act);
+        }
+
+        // Pie de horario según nivel de riesgo
+        imprimirBloqueFinal(riesgo);
+    }
+
+    // ── Bloques fijos de apertura según riesgo ────────────────────────────────
+    private void imprimirBloqueInicial(String riesgo) {
+        System.out.println();
+        if (riesgo.equals("ALTO")) {
+            System.out.println("  06:00 - 07:00 | Levantarse y ejercicio (SIN pantallas)  (1.0 h)");
+            System.out.println("  07:00 - 08:00 | Desayuno sin dispositivos                (1.0 h)");
+        } else if (riesgo.equals("MEDIO")) {
+            System.out.println("  07:00 - 07:30 | Levantarse                               (0.5 h)");
+            System.out.println("  07:30 - 08:00 | Desayuno                                 (0.5 h)");
+        } else {
+            System.out.println("  07:00 - 08:00 | Rutina matutina libre                    (1.0 h)");
+        }
+        System.out.println("  ──────────────────────────────────────────────");
+    }
+
+    // ── Bloques fijos de cierre según riesgo ──────────────────────────────────
+    private void imprimirBloqueFinal(String riesgo) {
+        System.out.println("  ──────────────────────────────────────────────");
+        if (riesgo.equals("ALTO")) {
+            System.out.println("  20:00 - 21:00 | Tiempo al aire libre                     (1.0 h)");
+            System.out.println("  21:00 - 21:30 | Cena sin pantallas                       (0.5 h)");
+            System.out.println("  21:30 - 22:00 | Máx. 30 min de pantalla permitidos       (0.5 h)");
+            System.out.println("  22:00         | DORMIR (sin dispositivos en el cuarto)");
+        } else if (riesgo.equals("MEDIO")) {
+            System.out.println("  20:00 - 21:00 | Tiempo libre (máx. 1 h de pantalla)      (1.0 h)");
+            System.out.println("  21:00 - 21:30 | Cena                                     (0.5 h)");
+            System.out.println("  21:30 - 22:00 | Redes sociales (máx. 30 min)             (0.5 h)");
+            System.out.println("  23:00         | DORMIR");
+        } else {
+            System.out.println("  20:00 - 22:00 | Tiempo personal / ocio digital moderado  (2.0 h)");
+            System.out.println("  23:00         | DORMIR");
+        }
+        System.out.println();
     }
 }
