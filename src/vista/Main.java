@@ -3,10 +3,7 @@
 public class Main {
 
     private static final String[] NOMBRES_USUARIOS = {
-        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago", "Emilia", "Nicolás", "Martina", "Gabriel", 
-        "Antonella", "Joaquín", "Victoria", "Lucas", "Renata", "Alejandro", "Daniela", "Andrés", "Florencia", "Benjamín", "Julia", "Francisco", "Emma", "Martín", 
-        "Carla", "Thiago", "Mia", "Ignacio", "Clara", "Diego", "Luciana", "José", "Paula", "Manuel", "Martina", "Juan", "Emilia", "Pedro", "Camila", "Luis", "Ana", 
-        "Carlos", "Laura", "Jorge", "Sofía", "Ricardo"
+        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago"
     };
 
     public static void main(String[] args) throws InterruptedException {
@@ -16,8 +13,7 @@ public class Main {
         System.out.println("   Simulación continua — cierra la terminal para detener");
         System.out.println("╚══════════════════════════════════════════════╝\n");
 
-        // Lanzar un hilo por usuario, cada uno con un intervalo distinto (en segundos)
-        int[] intervalos = {5, 7, 9, 11, 13};
+        int[] intervalos = {5, 7, 9, 11, 13, 15, 17, 19, 21, 23}; // cada usuario genera una nueva planificación cada X segundos
 
         for (int i = 0; i < NOMBRES_USUARIOS.length; i++) {
             HiloUsuario hilo = new HiloUsuario(NOMBRES_USUARIOS[i], intervalos[i]);
