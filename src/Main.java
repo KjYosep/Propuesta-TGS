@@ -3,7 +3,10 @@
 public class Main {
 
     private static final String[] NOMBRES_USUARIOS = {
-        "Alejo", "Valeria", "Santiago", "Mariana", "Esteban"
+        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago", "Emilia", "Nicolás", "Martina", "Gabriel", 
+        "Antonella", "Joaquín", "Victoria", "Lucas", "Renata", "Alejandro", "Daniela", "Andrés", "Florencia", "Benjamín", "Julia", "Francisco", "Emma", "Martín", 
+        "Carla", "Thiago", "Mia", "Ignacio", "Clara", "Diego", "Luciana", "José", "Paula", "Manuel", "Martina", "Juan", "Emilia", "Pedro", "Camila", "Luis", "Ana", 
+        "Carlos", "Laura", "Jorge", "Sofía", "Ricardo"
     };
 
     public static void main(String[] args) throws InterruptedException {
