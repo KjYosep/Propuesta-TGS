@@ -1,20 +1,16 @@
 public class GeneradorAlertas {
 
-    /**
-     * Muestra una alerta según el nivel de riesgo calculado.
-     *
-     * @param riesgo "ALTO", "MEDIO" o cualquier otro valor (tratado como BAJO)
-     */
     public void mostrarAlerta(String riesgo) {
-        switch (riesgo) {
+
+        switch (riesgo) {   //riesgo se calcula en la clase AnalizadorHabitos
             case "ALTO":
-                System.out.println("  ⚠  ALERTA    : Uso excesivo del celular. ¡Tome medidas hoy!");
+                System.out.println("\tALERTA: Uso excesivo del celular. ¡Tome medidas hoy!");       // se generan alertas dependiendo del nivel de riesgo que presente el usuario
                 break;
             case "MEDIO":
-                System.out.println("  ⚠  ADVERTENCIA: Controle su tiempo de pantalla.");
+                System.out.println("\tADVERTENCIA: Controle su tiempo de pantalla.");
                 break;
             default:
-                System.out.println("  ✓  Buen manejo del tiempo digital. ¡Siga así!");
+                System.out.println("\tBuen manejo del tiempo digital. ¡Siga así!");
         }
     }
 }

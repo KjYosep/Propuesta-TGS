@@ -1,30 +1,28 @@
-
-
 public class Main {
 
     private static final String[] NOMBRES_USUARIOS = {
-        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago"
+        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago"       // 10 nombres para 10 hilos
     };
 
     public static void main(String[] args) throws InterruptedException {
 
-        System.out.println("╔══════════════════════════════════════════════╗");
-        System.out.println("   SISTEMA DE CONTROL DE ADICCIÓN DIGITAL");
-        System.out.println("   Simulación continua — cierra la terminal para detener");
-        System.out.println("╚══════════════════════════════════════════════╝\n");
+        System.out.println("============================================================");
+        System.out.println("\tSISTEMA DE CONTROL DE ADICCIÓN DIGITAL");
+        System.out.println("  Simulación continua — cierra la terminal para detener");
+        System.out.println("============================================================\n");
 
-        int[] intervalos = {5, 7, 9, 11, 13, 15, 17, 19, 21, 23}; // cada usuario genera una nueva planificación cada X segundos
+        int[] intervalos = {6, 6, 6, 6, 6, 6, 6, 6, 6, 6}; // cada usuario genera una nueva planificación cada 6 segundos
 
-        for (int i = 0; i < NOMBRES_USUARIOS.length; i++) {
+        for (int i = 0; i < NOMBRES_USUARIOS.length; i++) {         // por cada nombre, crear y arrancar un hilo de usuario
             HiloUsuario hilo = new HiloUsuario(NOMBRES_USUARIOS[i], intervalos[i]);
             hilo.start();
             System.out.println("▶ Hilo iniciado: " + NOMBRES_USUARIOS[i]
                     + " (cada " + intervalos[i] + "s)");
         }
 
-        System.out.println("\nTodos los hilos corriendo. Cierra la terminal para detener.\n");
+        System.out.println("\nTodos los hilos corriendo. Cierra la terminal para detener.\n");      // termina al cerrar la terminal
 
-        // Mantener el hilo principal vivo para que los daemon threads no mueran
-        Thread.currentThread().join(); // espera indefinidamente
+        
+        Thread.currentThread().join(); // Mantener el hilo principal vivo 
     }
 }

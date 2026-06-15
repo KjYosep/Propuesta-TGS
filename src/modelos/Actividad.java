@@ -18,7 +18,7 @@ public class Actividad {
     public double getHoras()   { return horas; }
     public int getHoraInicio() { return horaInicio; }
 
-    /** Hora en que termina esta actividad (horaInicio + duración redondeada) */
+    // Hora en que termina actividad (horaInicio + duración redondeada) 
     public int getHoraFin() {
         return horaInicio + (int) Math.ceil(horas);
     }

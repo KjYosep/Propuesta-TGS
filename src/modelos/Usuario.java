@@ -2,27 +2,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/* Esta es la clase Usuario, representa a los usuarios del sistema
+ --» Cadad usuario tiene un nombre y una lista de actividades diarias que se muestran en el hilo de forma aleatoria
+ --» Tambien se tiene un tiempo de uso que se une aleatoriamente con cada actividad con el fin de detectar el nivel de riesgo del usuario 
+ y de generar un horario recomendado por el asistente de IA
+ --» Se asegura de que no se repitan actividades para un mismo usuario en un horario
+*/
+
 public class Usuario {
     protected String nombre;
     protected ArrayList<Actividad> actividades;
 
-    // ── Banco de nombres de actividades posibles ──────────────────────────────
     private static final String[] BANCO_ACTIVIDADES = {
         "Estudiar", "Entrenar en el gimnasio", "Reunión de equipo",
         "Leer un libro", "Meditar", "Avanzar en proyecto",
-        "Desayuno tranquilo", "Salir a caminar", "Practicar guitarra",
+        "Desayuno tranquilo", "Salir a caminar", "Practicar guitarra",      // actividades de cada usuario
         "Revisar correos", "Cocinar", "Videollamada familiar",
         "Escribir en el diario", "Aprender idioma", "Yoga",
         "Ver documental", "Dibujar / diseñar", "Investigación académica",
         "Deporte al aire libre", "Organizar el espacio de trabajo"
     };
 
-    // ── Duraciones posibles en horas (0.5, 1.0, 1.5 … 3.0) ──────────────────
-    private static final double[] DURACIONES_POSIBLES = {0.5, 1.0, 1.5, 2.0, 2.5, 3.0};
+    private static final double[] DURACIONES_POSIBLES = {0.5, 1.0, 1.5, 2.0, 2.5, 3.0}; // Tiempo de uso de cada actividad (en horas)
 
-    // ── Rango horario permitido: 6 am – 10 pm ─────────────────────────────────
     private static final int HORA_MIN = 6;
-    private static final int HORA_MAX = 22;
+    private static final int HORA_MAX = 22;     // horario de 6 AM «--» 10 PM para actividades
 
     public Usuario(String nombre) {
         this.nombre = nombre;
@@ -32,37 +36,32 @@ public class Usuario {
     public String getNombre() { return nombre; }
     public ArrayList<Actividad> getActividades() { return actividades; }
 
-    // ── Agregar actividad manualmente (mantiene compatibilidad) ────────────────
+    // Agregar actividad manualmente (ya no se usa, se reemplazo por el banco de actividades aleatorias)
     public void agregarActividad(String nombre, double horas) {
         actividades.add(new Actividad(nombre, horas));
     }
 
-    /**
-     * Genera entre minAct y maxAct actividades aleatorias para este usuario,
-     * garantizando que no haya conflictos de horario.
-     *
-     * @param cantidad número de actividades a intentar programar
-     * @param rng      instancia de Random compartida (o nueva si se pasa null)
-     */
-    public void generarActividadesAleatorias(int cantidad, Random rng) {
+    // cantidad son las actividades a generar, rng es la fuente de aleatoriedad (puede ser null para crear una nueva)
+    public void generarActividadesAleatorias(int cantidad, Random rng) {    
         if (rng == null) rng = new Random();
-        actividades.clear();
+        actividades.clear();        // limpiar las actividades previas para evitar que se muestren repetidas
 
-        // Mezclar el banco para que cada usuario tenga un subconjunto distinto
         ArrayList<String> bancoMezclado = new ArrayList<>();
-        for (String a : BANCO_ACTIVIDADES) bancoMezclado.add(a);
+        for (String a : BANCO_ACTIVIDADES) bancoMezclado.add(a);        // aqui se mezclas las actividades para que sean distintas cada vez
         Collections.shuffle(bancoMezclado, rng);
 
-        int intentosMaximos = cantidad * 5; // intentos para encontrar hueco libre
-        int actividadesAgregadas = 0;
+        int intentosMaximos = cantidad * 10; // para evitar loops infinitos si no se pueden ubicar actividades sin que sean iguales 
+        int actividadesAgregadas = 0;      
         int idx = 0;
 
         for (int intento = 0; intento < intentosMaximos && actividadesAgregadas < cantidad; intento++) {
-            if (idx >= bancoMezclado.size()) break; // se agotaron los nombres
+            if (idx >= bancoMezclado.size()) break; //si ya usamos todas las actividades disponibles, no podemos agregar más
 
-            String nombre  = bancoMezclado.get(idx);
-            double duracion = DURACIONES_POSIBLES[rng.nextInt(DURACIONES_POSIBLES.length)];
-            int horaInicio  = HORA_MIN + rng.nextInt(HORA_MAX - HORA_MIN - (int) Math.ceil(duracion));
+            String nombre  = bancoMezclado.get(idx);        // se toma el nombre de la actividad del banco mezclado (no se repiten hasta que se acaben)
+            double duracion = DURACIONES_POSIBLES[rng.nextInt(DURACIONES_POSIBLES.length)];     // se asigna una duración aleatoria a la actividad (en horas)
+            int horaInicio  = HORA_MIN + rng.nextInt(HORA_MAX - HORA_MIN - (int) Math.ceil(duracion));      // se asigna una hora de inicio aleatoria, asegurando que la actividad termine antes de HORA_MAX
+
+             // Solo agregamos la actividad si no hay conflicto de horarios con las ya programadas
 
             if (!hayConflicto(horaInicio, duracion)) {
                 actividades.add(new Actividad(nombre, duracion, horaInicio));

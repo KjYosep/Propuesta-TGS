@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/* Esta es la clase del hilo, aqui se maneja todo el entorno*/
+
 public class HiloUsuario extends Thread {
 
     private final String nombre;

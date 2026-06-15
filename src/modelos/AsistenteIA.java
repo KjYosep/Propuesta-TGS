@@ -2,21 +2,13 @@ import java.util.ArrayList;
 
 public class AsistenteIA {
 
-    /**
-     * Muestra el horario generado para un usuario a partir de su lista
-     * de actividades (ya ordenadas cronológicamente por Usuario).
-     * Ya no pide entrada al usuario: todo viene del motor aleatorio.
-     *
-     * @param usuario objeto con nombre y actividades generadas
-     * @param riesgo  nivel de riesgo calculado por AnalizadorHabitos
-     */
     public void generarHorario(Usuario usuario, String riesgo) {
         ArrayList<Actividad> lista = usuario.getActividades();
 
-        System.out.println("\n╔══════════════════════════════════════════════╗");
+        System.out.println("\n================================================");
         System.out.println("  HORARIO RECOMENDADO — " + usuario.getNombre());
         System.out.println("  Nivel de riesgo digital: " + riesgo);
-        System.out.println("╚══════════════════════════════════════════════╝");
+        System.out.println("=====================================================");
 
         if (lista.isEmpty()) {
             System.out.println("  (No se generaron actividades para este usuario)");

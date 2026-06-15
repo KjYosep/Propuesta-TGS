@@ -10,9 +10,7 @@ public class MonitorUso {
     private double otros;
     private double tiempoTotal;
 
-    // ── Constructor original (se mantiene para compatibilidad) ────────────────
-    public MonitorUso(double redesSociales, double juegos, double productividad,
-                      double musica, double streaming, double otros) {
+    public MonitorUso(double redesSociales, double juegos, double productividad, double musica, double streaming, double otros) {
         this.redesSociales  = redesSociales;
         this.juegos         = juegos;
         this.productividad  = productividad;
@@ -22,17 +20,11 @@ public class MonitorUso {
         this.tiempoTotal    = redesSociales + juegos + productividad + musica + streaming + otros;
     }
 
-    /**
-     * Constructor de generación aleatoria.
-     * Cada categoría recibe entre 0 y maxHorasPorCategoria horas (con paso de 0.5).
-     *
-     * @param rng instancia Random; si es null crea una nueva
-     */
     public MonitorUso(Random rng) {
         if (rng == null) rng = new Random();
         this.redesSociales  = redondearMedio(rng.nextDouble() * 4);   // 0 – 4 h
         this.juegos         = redondearMedio(rng.nextDouble() * 3);   // 0 – 3 h
-        this.productividad  = redondearMedio(rng.nextDouble() * 3);   // 0 – 3 h
+        this.productividad  = redondearMedio(rng.nextDouble() * 3);   // 0 – 3 h            // se asigna el tiempo de uso aleatoriamente
         this.musica         = redondearMedio(rng.nextDouble() * 2);   // 0 – 2 h
         this.streaming      = redondearMedio(rng.nextDouble() * 3);   // 0 – 3 h
         this.otros          = redondearMedio(rng.nextDouble() * 2);   // 0 – 2 h
