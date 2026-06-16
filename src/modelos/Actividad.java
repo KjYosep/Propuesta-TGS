@@ -1,3 +1,6 @@
+// la clase actividad es para representar las actividades diarias del usuario, cada actividad tiene un nombre, una duración en horas 
+// y una hora de inicio (opcional, con valor por defecto a las 8am)
+
 public class Actividad {
     private String nombre;
     private double horas;
@@ -24,8 +27,8 @@ public class Actividad {
     }
 
     @Override
-    public String toString() {
-        return String.format("%02d:00 - %02d:00 | %-25s (%.1f h)",
+    public String toString() {      // formato de impresión: "08:00 - 10:30 | Nombre de actividad (2.5 h)"
+        return String.format("%02d:00 - %02d:00 | %-25s (%.1f h)", 
                 horaInicio, getHoraFin(), nombre, horas);
     }
 }

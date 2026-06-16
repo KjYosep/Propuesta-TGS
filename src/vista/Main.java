@@ -1,10 +1,10 @@
 public class Main {
 
     private static final String[] NOMBRES_USUARIOS = {
-        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago"       // 10 nombres para 10 hilos
+        "Sofía", "Mateo", "Valentina", "Sebastián", "Isabella", "Daniel", "Camila", "Matías", "Lucía", "Santiago"       // lista de nombres de usuarios para la simulación
     };
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {    
 
         System.out.println("============================================================");
         System.out.println("\tSISTEMA DE CONTROL DE ADICCIÓN DIGITAL");

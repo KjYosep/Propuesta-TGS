@@ -12,50 +12,48 @@ public class HiloUsuario extends Thread {
     private final String nombre;
     private final int intervaloSegundos; // cada cuántos segundos genera una nueva planificación
 
-    private final AnalizadorHabitos analizador = new AnalizadorHabitos();
+    // se crean instancias de las clases necesarias para el ciclo de simulación: el analizador de hábitos, el generador de alertas y el asistente de IA
+    private final AnalizadorHabitos analizador = new AnalizadorHabitos();   
     private final GeneradorAlertas  alertas    = new GeneradorAlertas();
     private final AsistenteIA       asistente  = new AsistenteIA();
 
     public HiloUsuario(String nombre, int intervaloSegundos) {
-        this.nombre             = nombre;
-        this.intervaloSegundos  = intervaloSegundos;
-        // Nombre visible en la traza de hilos
-        setName("Hilo-" + nombre);
-        // Hilo daemon: se cierra solo cuando el programa principal termina (Ctrl+C)
-        setDaemon(true);
+        this.nombre = nombre;       
+        this.intervaloSegundos = intervaloSegundos;
+
+        setName("Hilo-" + nombre);      // se asigna un nombre al hilo para identificarlo en la salida de la consola
+        setDaemon(true);    // lo que hace que el hilo se cierre solo al cerrar la terminal
     }
 
     @Override
-    public void run() {
-        Random rng = new Random(); // cada hilo tiene su propio Random → resultados independientes
+    public void run() {     // iniciar el ciclo de simulación para este usuario, que se repite cada intervaloSegundos segundos
+        Random rng = new Random();      // cada hilo tiene su propio Random → resultados independientes
 
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {   // mientras el hilo no sea interrumpido se seguiran generando planificaciones para el usuario cada intervaloSegundos segundos
             try {
                 generarCiclo(rng);
-                Thread.sleep(intervaloSegundos * 1000L);
+                Thread.sleep(intervaloSegundos * 1000L);    // esperar el intervalo antes de generar la siguiente planificación
             } catch (InterruptedException e) {
-                // Ctrl+C o interrupt() externo: salimos limpiamente
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt();     // poner el hilo en estado de interrupción para salir del ciclo (si se interrumpe desde fuera)
             }
         }
     }
 
-    // ── Un ciclo completo de simulación para este usuario ─────────────────────
-    private void generarCiclo(Random rng) {
-        LocalDate hoy = LocalDate.now();
-        DayOfWeek dia = hoy.getDayOfWeek();
+    
+    private void generarCiclo(Random rng) {     // este método genera una planificación completa para el usuario: crea actividades aleatorias, calcula el riesgo digital, y muestra todo en la consola
+        LocalDate hoy = LocalDate.now();        
+        DayOfWeek dia = hoy.getDayOfWeek();     // usa la fecha actual
 
-        // Crear usuario y generar actividades aleatorias
-        Usuario usuario = new Usuario(nombre);
-        int numActividades = 3 + rng.nextInt(4); // entre 3 y 6
-        usuario.generarActividadesAleatorias(numActividades, rng);
+        Usuario usuario = new Usuario(nombre);          // se crea el usuario
+        int numActividades = 3 + rng.nextInt(4);    // entre 3 y 6 actividades diarias aleatorias para cada usuario
+        usuario.generarActividadesAleatorias(numActividades, rng);  // se generan las actividades teniendo en cuenta el numero de activiades 
 
-        // Ordenar según día de la semana
-        ordenarSegunDia(usuario.getActividades(), dia, rng);
+        ordenarSegunDia(usuario.getActividades(), dia, rng);    // ordena las actividades según el día de la semana 
+        // (lunes y miércoles: más tiempo en actividades largas, martes y jueves: más tiempo en actividades cortas, fines de semana: orden aleatorio)
 
         // Uso digital y riesgo
         MonitorUso monitor = new MonitorUso(rng);
-        String riesgo = analizador.calcularRiesgo(monitor.getTiempoTotal());
+        String riesgo = analizador.calcularRiesgo(monitor.getTiempoTotal());    // ejecuta el analizador dde habitos
 
         // Imprimir resultado (sincronizado para que los hilos no mezclen líneas)
         synchronized (System.out) {
@@ -76,7 +74,7 @@ public class HiloUsuario extends Thread {
         }
     }
 
-    // ── Misma lógica de ordenamiento que Main ─────────────────────────────────
+//  ordenar actividades segun el dia de la semana
     private static void ordenarSegunDia(ArrayList<Actividad> lista,
                                         DayOfWeek dia, Random rng) {
         switch (dia) {

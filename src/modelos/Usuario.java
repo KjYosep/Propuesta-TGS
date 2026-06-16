@@ -59,11 +59,11 @@ public class Usuario {
 
             String nombre  = bancoMezclado.get(idx);        // se toma el nombre de la actividad del banco mezclado (no se repiten hasta que se acaben)
             double duracion = DURACIONES_POSIBLES[rng.nextInt(DURACIONES_POSIBLES.length)];     // se asigna una duración aleatoria a la actividad (en horas)
-            int horaInicio  = HORA_MIN + rng.nextInt(HORA_MAX - HORA_MIN - (int) Math.ceil(duracion));      // se asigna una hora de inicio aleatoria, asegurando que la actividad termine antes de HORA_MAX
+            int horaInicio  = HORA_MIN + rng.nextInt(HORA_MAX - HORA_MIN - (int) Math.ceil(duracion)); // se asigna una hora de inicio aleatoria, asegurando que la actividad termine antes de HORA_MAX
 
-             // Solo agregamos la actividad si no hay conflicto de horarios con las ya programadas
+            
 
-            if (!hayConflicto(horaInicio, duracion)) {
+            if (!hayConflicto(horaInicio, duracion)) {  // si no hay conflicto con actividades ya programadas, se agrega al horario del usuario
                 actividades.add(new Actividad(nombre, duracion, horaInicio));
                 actividadesAgregadas++;
                 idx++; // solo avanzamos en el banco cuando el nombre fue aceptado
