@@ -40,7 +40,7 @@ public class HiloUsuario extends Thread {
     }
 
     
-    private void generarCiclo(Random rng) {     // este método genera una planificación completa para el usuario: crea actividades aleatorias, calcula el riesgo digital, y muestra todo en la consola
+    private void generarCiclo(Random rng) {     // este método genera una planificación completa para el usuario:
         LocalDate hoy = LocalDate.now();        
         DayOfWeek dia = hoy.getDayOfWeek();     // usa la fecha actual
 
